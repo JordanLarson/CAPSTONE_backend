@@ -1,0 +1,28 @@
+{
+  "name": "capstone_backend",
+  "version": "1.0.0",
+  "description": "Social media/ surf forecast app that allows users to post on a feed, and search through local breaks in their area.",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.28",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanLarson/CAPSTONE_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JordanLarson/CAPSTONE_backend/issues"
+  },
+  "homepage": "https://github.com/JordanLarson/CAPSTONE_backend#readme"
+}
