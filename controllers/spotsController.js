@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:spot_id", async (req, res) => {
   try {
-    const { spot_id } = req.params;
+    const { id } = req.params;
     const spot = await Spot.findById(id);
     if (spot) {
       return res.status(200).json({ spot });
