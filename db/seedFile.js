@@ -2,11 +2,13 @@ const mongoose = require("./connection.js");
 const db = mongoose.connection;
 const User = require("../models/users");
 const Spot = require("../models/spots");
+const Feed = require("../models/feed");
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const main = async () => {
   await User.deleteMany({});
+  await Feed.deleteMany({});
 
   const users = [
     {

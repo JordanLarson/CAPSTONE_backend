@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Message = require("../models/messages");
+const Feed = require("../models/feed");
 
 router.get("/", async (req, res) => {
   try {
     senderId = req.query.sender;
     spotId = req.query.spotId;
 
-    const messages = await Message.find({ spotId: spotId });
-    return res.json({ messages });
+    const feed = await Feed.find({ spotId: spotId });
+    return res.json({ feed });
   } catch (error) {
     console.log("error");
     return res.status(500).send(error.message);
@@ -17,9 +17,9 @@ router.get("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleted = await Message.findByIdAndDelete(id);
+    const deleted = await Feed.findByIdAndDelete(id);
     if (deleted) {
-      return res.status(200).send("Message deleted");
+      return res.status(200).send("Feed item deleted");
     }
     throw new Error("Item not found");
   } catch (error) {
@@ -28,18 +28,17 @@ router.delete("/:id", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   try {
-    req.body.spotId = spotId;
-    const newMessage = await new Message(req.body);
-    await newMessage.save();
-    console.log(newMessage);
-    return res.status(201).json(newMessage);
+    const newFeedItem = await new Feed(req.body);
+    await newFeedItem.save();
+    console.log(newFeedItem);
+    return res.status(201).json(newFeedItem);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 });
 
 router.put("/:id", (req, res) => {
-  Message.findByIdAndUpdate(
+  Feed.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true },
@@ -52,11 +51,13 @@ router.put("/:id", (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const message = await Message.findById(id);
-    if (message) {
-      return res.status(200).json({ message });
+    const feedItem = await Feed.findById(id);
+    if (feedItem) {
+      return res.status(200).json({ feedItem });
     }
-    return res.status(404).send("Message with the specified ID does not exist");
+    return res
+      .status(404)
+      .send("Feed item with the specified ID does not exist");
   } catch (error) {
     return res.status(500).send(error.message);
   }
