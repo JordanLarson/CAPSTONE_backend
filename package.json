@@ -4,13 +4,15 @@
   "description": "Social media/ surf forecast app that allows users to post on a feed, and search through local breaks in their area.",
   "main": "server.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "core-util-is": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.28",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "react-media": "^1.10.0"
   },
   "devDependencies": {},
   "scripts": {

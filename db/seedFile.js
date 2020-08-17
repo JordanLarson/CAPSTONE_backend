@@ -413,6 +413,7 @@ const main = async () => {
   await Spot.insertMany(spots);
   console.log("Created some Spots, yeehaw!");
 };
+
 const run = async () => {
   await main();
   db.close();
