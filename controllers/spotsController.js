@@ -11,9 +11,9 @@ router.get("/", async (req, res) => {
 
     if (waveHeight === undefined && stars === undefined) {
       if (region === undefined) {
-        return res.json(await Spot.find());
+        return res.status(200).json(await Spot.find());
       } else {
-        return res.json(await Spot.find({ region: region }));
+        return res.status(200).json(await Spot.find({ region: region }));
       }
     }
 
@@ -27,12 +27,10 @@ router.get("/", async (req, res) => {
 
     //inspired by tutorial at https://futurestud.io/tutorials/node-js-how-to-run-an-asynchronous-function-in-array-map
     const promises = spots.map(async (spot) => {
-      const response = await Axios({
-        method: "GET",
-        url:
-          "https://magicseaweed.com/api/66c79af0fe4e3fb73b3915ea2ef63999/forecast/?fields=swell.maxBreakingHeight,solidRating,fadedRating&spot_id=" +
-          spot.id,
-      });
+      const response = await Axios(
+        "https://magicseaweed.com/api/66c79af0fe4e3fb73b3915ea2ef63999/forecast/?fields=swell.maxBreakingHeight,solidRating,fadedRating&spot_id=" +
+          spot.id
+      );
 
       return {
         id: spot.id,
@@ -55,23 +53,34 @@ router.get("/", async (req, res) => {
       return true;
     });
 
-    return res.json(filtered);
+    return res.status(200).json(filtered);
   } catch (error) {
     console.log("error");
     return res.status(500).send(error.message);
   }
 });
 
-router.get("/:spot_id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const { spot_id } = req.params;
-    const spot = await Spot.findById(id);
-    if (spot) {
-      return res.status(200).json(spot);
+    const spot = await Spot.findOne({ id: req.params.id });
+    if (!spot) {
+      return res
+        .status(404)
+        .send("Spot with the specified spot_ID does not exist");
     }
-    return res
-      .status(404)
-      .send("Spot with the specified spot_ID does not exist");
+
+    const magicseaweedResponse = await Axios(
+      "http://magicseaweed.com/api/66c79af0fe4e3fb73b3915ea2ef63999/forecast/?fields=swell.minBreakingHeight,swell.maxBreakingHeight,swell.components.combined.height,swell.components.combined.period,swell.components.combined.compassDirection,condition.temperature,wind.speed,wind.compassDirection,charts.swell,charts.wind,solidRating,fadedRating&spot_id=" +
+        spot.id
+    );
+
+    response = {
+      id: spot.id,
+      name: spot.name,
+      report: magicseaweedResponse.data[0],
+    };
+
+    return res.status(200).json(response);
   } catch (error) {
     return res.status(500).send(error.message);
   }
