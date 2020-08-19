@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
     }
 
     let spots = await Spot.find({ region: region });
-    spots = spots.slice(0, 3); // only 3 spots to help avoid spamming magic seaweed
+    // spots = spots.slice(0, 3); // only 3 spots to help avoid spamming magic seaweed
     console.log(spots);
 
     //inspired by tutorial at https://futurestud.io/tutorials/node-js-how-to-run-an-asynchronous-function-in-array-map
@@ -35,6 +35,7 @@ router.get("/", async (req, res) => {
       return {
         id: spot.id,
         name: spot.name,
+        region: spot.region,
         report: response.data[0],
       };
     });
@@ -77,6 +78,7 @@ router.get("/:id", async (req, res) => {
     response = {
       id: spot.id,
       name: spot.name,
+      region: spot.region,
       report: magicseaweedResponse.data[0],
     };
 
